@@ -1,6 +1,7 @@
-🚀 Image Enhancer Tool
+🚀 AI Image Enhancement Tool (Real-ESRGAN + OpenCV)
 
-A modern desktop application for image enhancement and super-resolution, combining classical computer vision techniques with AI-powered upscaling (Real-ESRGAN).
+A modern desktop application for image enhancement and super-resolution, 
+combining classical computer vision techniques with GAN-based deep learning upscaling.
 
 Built with a clean UI using CustomTkinter, this tool provides both manual controls and deep learning enhancement in one workflow.
 
@@ -15,8 +16,7 @@ Built with a clean UI using CustomTkinter, this tool provides both manual contro
 - Noise reduction (OpenCV denoising)
 
 🤖 AI Super-Resolution
-- Powered by Real-ESRGAN (x4 upscaling)
-- Deep learning-based image reconstruction
+- GAN-based super-resolution (Real-ESRGAN, x4 upscaling)
 - Runs on CPU (no GPU required)
 
 🖥️ Modern UI
@@ -49,6 +49,7 @@ main.py               # Entry point
 requirements.txt
 README.md
 
+This project follows a modular architecture separating UI, processing logic, and model handling to ensure scalability and maintainability.
 --------------------------------------------------
 
 ⚙️ Installation
