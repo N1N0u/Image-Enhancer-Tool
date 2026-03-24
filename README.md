@@ -55,7 +55,7 @@ This project follows a modular architecture separating UI, processing logic, and
 ⚙️ Installation
 
 1. Clone Repository
-git clone https://github.com/your-username/Image-Enhancer-Tool.git
+git clone https://github.com/N1N0u/Image-Enhancer-Tool.git
 cd Image-Enhancer-Tool
 
 2. Install Dependencies
