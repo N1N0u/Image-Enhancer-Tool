@@ -31,6 +31,12 @@ Built with a clean UI using CustomTkinter, this tool provides both manual contro
 
 --------------------------------------------------
 
+## 📸 Demo
+
+### 📷 Testing
+![Data Collection](screenshots/test.gif)
+
+
 🧠 Architecture Overview
 
 Image-Enhancer-Tool/
