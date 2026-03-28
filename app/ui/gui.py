@@ -72,14 +72,14 @@ class App(ctk.CTk):
         # AI Enhancement Button
         self.btn_ai = ctk.CTkButton(
             self.left_frame,
-            text="🤖 AI Enhance",
+            text="AI Enhance",
             command=self.ai_enhance_image
         )
         self.btn_ai.pack(pady=10)
 
         # ========== SAVE OPTIONS (Left Panel) ==========
 
-        self.lbl_save = ctk.CTkLabel(self.left_frame, text="💾 Save Options:")
+        self.lbl_save = ctk.CTkLabel(self.left_frame, text="Save Options:")
         self.lbl_save.pack(pady=(20, 5))
 
         # Save Manual Enhanced Image
@@ -103,7 +103,7 @@ class App(ctk.CTk):
         # Save Both Images
         self.btn_save_both = ctk.CTkButton(
             self.left_frame,
-            text="💾 Save Both Images",
+            text="Save Both Images",
             command=self.save_both_images,
             fg_color="#6A1B9A"  # Purple color
         )
@@ -191,8 +191,8 @@ class App(ctk.CTk):
 
         try:
             print("*" * 50)
-            print("🤖 Starting AI Enhancement...")
-            print("⏳ This may take a while...")
+            print("Starting AI Enhancement...")
+            print("This may take a while...")
             print("*" * 50)
 
             # Disable button during processing to prevent multiple clicks
@@ -206,18 +206,18 @@ class App(ctk.CTk):
                 # Switch display to AI result
                 self.label_after.configure(text="Enhanced (AI)")
                 self.display_image(self.ai_result, self.label_after, "Enhanced (AI)")
-                print("✅ AI Enhancement Complete!")
+                print("AI Enhancement Complete!")
             else:
-                print("❌ Error: AI returned None")
+                print("Error: AI returned None")
 
         except Exception as e:
-            print("❌ AI Error:", e)
+            print("AI Error:", e)
             import traceback
             traceback.print_exc()
 
         finally:
             # Re-enable button regardless of success/failure
-            self.btn_ai.configure(state="normal", text="🤖 AI Enhance")
+            self.btn_ai.configure(state="normal", text="AI Enhance")
 
     # ========== SAVE FUNCTIONS ==========
 
@@ -243,7 +243,7 @@ class App(ctk.CTk):
 
         # Validate image exists
         if image_to_save is None:
-            print(f"❌ No {image_type} result to save!")
+            print(f"No {image_type} result to save!")
             return
 
         # Open save dialog
@@ -261,7 +261,7 @@ class App(ctk.CTk):
         # Save if user selected a path
         if path:
             cv2.imwrite(path, image_to_save)
-            print(f"✅ Saved {image_type} image: {path}")
+            print(f"Saved {image_type} image: {path}")
 
     def save_both_images(self):
         """
@@ -270,7 +270,7 @@ class App(ctk.CTk):
         """
         # Check if at least one result exists
         if self.manual_result is None and self.ai_result is None:
-            print("❌ No images to save!")
+            print("No images to save!")
             return
 
         # Ask user for destination folder
@@ -286,17 +286,17 @@ class App(ctk.CTk):
         if self.manual_result is not None:
             manual_path = os.path.join(folder, "manual_enhanced.jpg")
             cv2.imwrite(manual_path, self.manual_result)
-            print(f"✅ Saved: {manual_path}")
+            print(f"Saved: {manual_path}")
             saved_count += 1
 
         # Save AI enhanced image (PNG for lossless quality)
         if self.ai_result is not None:
             ai_path = os.path.join(folder, "ai_enhanced.png")
             cv2.imwrite(ai_path, self.ai_result)
-            print(f"✅ Saved: {ai_path}")
+            print(f"Saved: {ai_path}")
             saved_count += 1
 
-        print(f"✅ Total saved: {saved_count} images in {folder}")
+        print(f"Total saved: {saved_count} images in {folder}")
 
     # ========== UTILITY FUNCTIONS ==========
 
