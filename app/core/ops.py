@@ -62,7 +62,7 @@ class ImageEnhancer:
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB).astype(np.float32) / 255.0
         img_tensor = torch.from_numpy(np.transpose(img, (2, 0, 1))).unsqueeze(0).to(device)
 
-        # ✅ inference
+        # inference
         with torch.no_grad():
             output = model(img_tensor)
 
