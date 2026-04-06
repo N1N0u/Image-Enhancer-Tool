@@ -2,7 +2,7 @@ import customtkinter as ctk
 import cv2
 from PIL import Image, ImageTk
 from tkinter import filedialog
-
+import numpy as np
 from app.core.ops import ImageEnhancer
 
 
@@ -37,9 +37,7 @@ class App(ctk.CTk):
 
         # Load Image Button
         self.btn_load = ctk.CTkButton(
-            self.left_frame,
-            text="Load Image",
-            command=self.load_image
+            self.left_frame, text="Load Image", command=self.load_image
         )
         self.btn_load.pack(pady=10)
 
@@ -51,7 +49,7 @@ class App(ctk.CTk):
             self.left_frame,
             from_=-100,
             to=100,
-            command=self.on_brightness_change  # Real-time update callback
+            command=self.on_brightness_change,  # Real-time update callback
         )
         self.brightness_slider.set(20)
         self.brightness_slider.pack(pady=5)
@@ -64,16 +62,14 @@ class App(ctk.CTk):
             self.left_frame,
             from_=0.5,
             to=3,
-            command=self.on_contrast_change  # Real-time update callback
+            command=self.on_contrast_change,  # Real-time update callback
         )
         self.contrast_slider.set(1.4)
         self.contrast_slider.pack(pady=5)
 
         # AI Enhancement Button
         self.btn_ai = ctk.CTkButton(
-            self.left_frame,
-            text="AI Enhance",
-            command=self.ai_enhance_image
+            self.left_frame, text="AI Enhance", command=self.ai_enhance_image
         )
         self.btn_ai.pack(pady=10)
 
@@ -86,8 +82,8 @@ class App(ctk.CTk):
         self.btn_save_manual = ctk.CTkButton(
             self.left_frame,
             text="Save Manual (Brightness)",
-            command=lambda: self.save_image('manual'),
-            fg_color="#2E7D32"  # Green color
+            command=lambda: self.save_image("manual"),
+            fg_color="#2E7D32",  # Green color
         )
         self.btn_save_manual.pack(pady=5)
 
@@ -95,8 +91,8 @@ class App(ctk.CTk):
         self.btn_save_ai = ctk.CTkButton(
             self.left_frame,
             text="Save AI Enhanced",
-            command=lambda: self.save_image('ai'),
-            fg_color="#1565C0"  # Blue color
+            command=lambda: self.save_image("ai"),
+            fg_color="#1565C0",  # Blue color
         )
         self.btn_save_ai.pack(pady=5)
 
@@ -105,7 +101,7 @@ class App(ctk.CTk):
             self.left_frame,
             text="Save Both Images",
             command=self.save_both_images,
-            fg_color="#6A1B9A"  # Purple color
+            fg_color="#6A1B9A",  # Purple color
         )
         self.btn_save_both.pack(pady=5)
 
@@ -148,8 +144,26 @@ class App(ctk.CTk):
         )
 
         if path:
-            # Load image using OpenCV (returns BGR format)
-            self.original_image = cv2.imread(path)
+            # Fix for Unicode paths on Windows: read file as bytes first
+            try:
+                # Method 1: Read image as binary and decode
+                with open(path, "rb") as f:
+                    img_array = np.frombuffer(f.read(), np.uint8)
+                    self.original_image = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+
+                # Alternative Method 2: Convert path to Windows format (if needed)
+                # path = os.path.abspath(path)
+                # self.original_image = cv2.imread(path)
+
+            except Exception as e:
+                print(f"Error loading image: {e}")
+                self.original_image = None
+                return
+
+            # Check if image loaded successfully
+            if self.original_image is None:
+                print(f"Failed to decode image: {path}")
+                return
 
             # Reset previous results
             self.manual_result = None
@@ -213,6 +227,7 @@ class App(ctk.CTk):
         except Exception as e:
             print("AI Error:", e)
             import traceback
+
             traceback.print_exc()
 
         finally:
@@ -230,11 +245,11 @@ class App(ctk.CTk):
                      'ai' for AI super-resolution result
         """
         # Determine which image to save
-        if image_type == 'manual':
+        if image_type == "manual":
             image_to_save = self.manual_result
             default_name = "manual_enhanced.jpg"
             title = "Save Manual Enhanced Image"
-        elif image_type == 'ai':
+        elif image_type == "ai":
             image_to_save = self.ai_result
             default_name = "ai_enhanced.png"  # PNG preserves better quality for AI
             title = "Save AI Enhanced Image"
@@ -249,13 +264,13 @@ class App(ctk.CTk):
         # Open save dialog
         path = filedialog.asksaveasfilename(
             title=title,
-            defaultextension=".jpg" if image_type == 'manual' else ".png",
+            defaultextension=".jpg" if image_type == "manual" else ".png",
             filetypes=[
                 ("JPEG files", "*.jpg"),
                 ("PNG files", "*.png"),
-                ("All files", "*.*")
+                ("All files", "*.*"),
             ],
-            initialfile=default_name
+            initialfile=default_name,
         )
 
         # Save if user selected a path
@@ -280,6 +295,7 @@ class App(ctk.CTk):
             return
 
         import os
+
         saved_count = 0
 
         # Save manual enhanced image (JPEG for smaller size)
